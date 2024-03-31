@@ -26,7 +26,7 @@ export function FocusInput() {
         <div>
           <div>
             <h3>How long to Focus?</h3>
-            <defaultPreferences />
+            {/* <presetPreferences /> */}
             <input
               type="text"
               name="focusTime"
@@ -46,6 +46,7 @@ export function FocusInput() {
               string, music URL
             </input>
           </div>
+          ort to small and medi
           <div>
             <h3>Auto-rest</h3>
             <input type="text" name="autoRest" value={autoRest}>
