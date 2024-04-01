@@ -1,24 +1,32 @@
 import { observer } from "mobx-react-lite";
 import { types, getSnapshot } from "mobx-state-tree";
-import { defaultPreferences } from "../models/preferences";
+// import { Provider } from "mobx-state-tree";
+// import { defaultPreferences } from "../models/preferences";
+import PomPreferences from "../models/preferences";
+import { useContext } from "react";
 
-const presetPreferences = observer((props) => {
-  return <div>Preferences! {defaultPreferences.length}</div>;
-});
+const store = PomPreferences.create();
 
-export function FocusInput() {
-  let focusTime = 25;
-  const focusMusic = "Youtube or Spotify Link :)";
-  const autoRest = false;
-  const fadeOut = false;
+export const FocusInput = observer(() => {
+  const store = useContext(PomPreferences);
 
-  function updateFocus(event) {
-    focusTime = event.target.value;
-  }
+  // Accessing values from the store
+  const { focus } = store;
+  const { length, music, fadeOut } = focus;
 
-  const handleNewInput = function () {
-    console.log("this form submitted!");
+  const handleNewInput = function (e) {
+    e.preventDefault();
+    // Access and use MobX-State-Tree actions to update state
+    store.setFocusLength(focusTime);
+    store.setFocusMusic(focusMusic);
+    console.log("Form submitted with values:", {
+      focusTime,
+      focusMusic,
+      autoRest,
+      fadeOut,
+    });
   };
+
   return (
     <>
       <h2>Cadence Clock</h2>
@@ -26,14 +34,13 @@ export function FocusInput() {
         <div>
           <div>
             <h3>How long to Focus?</h3>
-            {/* <presetPreferences /> */}
             <input
               type="text"
               name="focusTime"
               placeholder="ex: 25"
-              value={focusTime}
-              onChange={updateFocus}
-            ></input>
+              value={length}
+              onChange={(e) => setFocusTime(parseInt(e.target.value))}
+            />
           </div>
           <div>
             <h3>Playlist URL for Focus Tunes</h3>
@@ -41,30 +48,32 @@ export function FocusInput() {
               type="text"
               name="focusMusic"
               placeholder="www.youtube...."
-              value={focusMusic}
-            >
-              string, music URL
-            </input>
+              value={music}
+              onChange={(e) => setFocusMusic(e.target.value)}
+            />
           </div>
-          ort to small and medi
           <div>
             <h3>Auto-rest</h3>
-            <input type="text" name="autoRest" value={autoRest}>
-              checkbox
-            </input>
+            <input
+              type="checkbox"
+              name="autoRest"
+              checked={autoRest}
+              onChange={(e) => setAutoRest(e.target.checked)}
+            />
           </div>
           <div>
             <h3>End of Focus Time</h3>
-            <input type="checkbox" name="finishSong" value={finishSong}>
-              Finish Song
-            </input>
-            <input type="checkbox" name="fadeOut" value={fadeOut}>
-              Fade Out
-            </input>
+            <input
+              type="checkbox"
+              name="fadeOut"
+              checked={fadeOut}
+              onChange={() => focus.toggleFadeOut()}
+            />
+            <label>Fade Out</label>
           </div>
         </div>
-        <button onClick={handleNewInput}>Next</button>
+        <button type="submit">Next</button>
       </form>
     </>
   );
-}
+});
