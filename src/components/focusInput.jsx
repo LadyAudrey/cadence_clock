@@ -1,30 +1,14 @@
 import { observer } from "mobx-react-lite";
-import { types, getSnapshot } from "mobx-state-tree";
-// import { Provider } from "mobx-state-tree";
-// import { defaultPreferences } from "../models/preferences";
-import PomPreferences from "../models/preferences";
-import { useContext } from "react";
-
-const store = PomPreferences.create();
+import { store } from "../models/preferences";
 
 export const FocusInput = observer(() => {
-  const store = useContext(PomPreferences);
-
-  // Accessing values from the store
   const { focus } = store;
-  const { length, music, fadeOut } = focus;
+  // Accessing values from the store
+  const { length, music, autoRest, fadeOut, setFadeOut, setAutoRest } = focus;
 
   const handleNewInput = function (e) {
     e.preventDefault();
-    // Access and use MobX-State-Tree actions to update state
-    store.setFocusLength(focusTime);
-    store.setFocusMusic(focusMusic);
-    console.log("Form submitted with values:", {
-      focusTime,
-      focusMusic,
-      autoRest,
-      fadeOut,
-    });
+    console.log(length, music, fadeOut, autoRest);
   };
 
   return (
@@ -39,7 +23,7 @@ export const FocusInput = observer(() => {
               name="focusTime"
               placeholder="ex: 25"
               value={length}
-              onChange={(e) => setFocusTime(parseInt(e.target.value))}
+              onChange={(e) => store.setFocusLength(parseInt(e.target.value))}
             />
           </div>
           <div>
@@ -49,7 +33,7 @@ export const FocusInput = observer(() => {
               name="focusMusic"
               placeholder="www.youtube...."
               value={music}
-              onChange={(e) => setFocusMusic(e.target.value)}
+              onChange={(e) => store.setFocusMusic(e.target.value)}
             />
           </div>
           <div>
@@ -58,7 +42,7 @@ export const FocusInput = observer(() => {
               type="checkbox"
               name="autoRest"
               checked={autoRest}
-              onChange={(e) => setAutoRest(e.target.checked)}
+              onChange={(e) => store.setAutoRest(e.target.checked)}
             />
           </div>
           <div>
@@ -67,7 +51,7 @@ export const FocusInput = observer(() => {
               type="checkbox"
               name="fadeOut"
               checked={fadeOut}
-              onChange={() => focus.toggleFadeOut()}
+              onChange={() => store.toggleFadeOut()}
             />
             <label>Fade Out</label>
           </div>

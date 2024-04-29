@@ -1,13 +1,18 @@
+// PVA types- it is a function that allows create different definitions of what your objects/ state
 import { types } from "mobx-state-tree";
 import { createContext, useContext } from "react";
 
+// a "factory"
 const Focus = types
   .model("Focus", {
     id: types.identifier,
     length: types.integer,
     music: types.string,
     fadeOut: types.boolean,
+    autoRest: types.boolean,
   })
+  // Calls the actions method of the t export- receives model definition "self"
+  // implicit return in .actions() and is relatively predictable
   .actions((self) => ({
     setLength(length) {
       self.length = length;
@@ -18,6 +23,9 @@ const Focus = types
     setFadeOut(fadeOut) {
       self.fadeOut = fadeOut;
     },
+    setAutoRest(autoRest) {
+      self.autoRest = autoRest;
+    },
   }));
 
 const PomPreferences = types
@@ -27,6 +35,7 @@ const PomPreferences = types
       length: 25,
       music: "we'll take care of this later",
       fadeOut: false,
+      autoRest: false,
     }),
   })
   .actions((self) => ({
@@ -39,13 +48,9 @@ const PomPreferences = types
     toggleFadeOut() {
       self.fadeOut = !self.fadeOut;
     },
+    toggleAutoRest() {
+      self.autoRest = !autoRest;
+    },
   }));
 
-const defaultFocus = Focus.create({
-  id: "1",
-  length: 25,
-  music: "we'll take care of this later",
-  fadeOut: false,
-});
-
-export default PomPreferences;
+export const store = PomPreferences.create();
