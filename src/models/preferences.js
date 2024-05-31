@@ -45,11 +45,11 @@ const PomPreferences = types
     setFocusMusic(music) {
       self.focus.setMusic(music);
     },
-    toggleFadeOut() {
+    setFadeOut() {
       self.fadeOut = !self.fadeOut;
     },
-    toggleAutoRest() {
-      self.autoRest = !autoRest;
+    setAutoRest() {
+      self.autoRest = !self.autoRest;
     },
   }));
 
